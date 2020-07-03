@@ -1,0 +1,33 @@
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+char auth[] = "X__O4y688nEC-0iJkSSbqU1ui7cwx3TV ";              //Your authentication key (for the project)
+char ssid[] = "SEKHANI";                                       // Network Name (WiFi name)
+char pass[] = "********";                                      // Network Password
+int gas_avalue;
+int a= D3;
+int s= D1;
+void setup()
+{
+  pinMode(s, INPUT);
+  pinMode(a, OUTPUT);
+  Serial.begin(9600);
+  Blynk.begin(auth, ssid, pass);
+}
+void loop()
+{
+  gas_avalue = digitalRead(s);
+  if (gas_avalue < 1)
+  {
+    Serial.println("DANGER!!!!");
+    Blynk.notify("DANGER!!!!!");
+    digitalWrite(a,HIGH);
+  }
+  else
+  {
+    Serial.println("NO LEAKAGE");
+    digitalWrite(a,LOW);
+  }
+  delay(100);
+  Blynk.run();
+}
